@@ -54,6 +54,9 @@ for j = 1:size(r,1)
     
     while (abs(a_02-a_0)>conv || abs(a_0-a_12)>conv) && i <i_max
     
+    a_02 = a_0;
+    a_12 = a_1;
+    
     sigma = (t(j) .* z) / (2*pi*r(j));                              % c_r local chord (Profilzehne?) 
     phi   = atand(((1-a_0).*v_1a/(1+a_1)*w*r(j)));                  % Anstroemungswinkel
     
@@ -70,8 +73,8 @@ for j = 1:size(r,1)
     c_n = c_ai*cosd(phi) + c_wi*sind(phi);                     % Step 5 - c_n Wert aus Gl. 6.12
     c_t = c_ai*sind(phi) - c_wi*cosd(phi);                     % Step 5 - c_t Wert aus Gl. 6.13
     % Auswertung von a und a'
-    a_0 = 1 / (((4*sind(phi)^2) / (sigma*c_n))+1);            % Step 6 - Werte von a und a'
-    a_1 = 1 / ((4*sind(phi)*cosd(phi)) / (sigma*c_t)-1);
+    a_02 = 1 / (((4*sind(phi)^2) / (sigma*c_n))+1);             % Step 6 - Werte von a und a'
+    a_12 = 1 / ((4*sind(phi)*cosd(phi)) / (sigma*c_t)-1);
     
     %a_0(i) = a_0;
     %a_1(i) = a_1;
@@ -79,6 +82,9 @@ for j = 1:size(r,1)
     i = i + 1;
     
     end
+
+    a_0 = a_02;
+    a_1 = a_12;
 
     d_T (j,1)= ((rho * z * v_1a^2 * (1 - a_0)^2) * c_n * t(j) * aufl) / (2 * (sind(phi)^2));
     
